@@ -1,7 +1,7 @@
 pipeline {
   environment {
-    registry = "huynhvuong565/ccp-uat"
-    registryCredential = '565'
+    registry = "library"
+    registryCredential = 'harbor'
     dockerImage = ''
   }
   agent any
