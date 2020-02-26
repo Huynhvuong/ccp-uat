@@ -35,7 +35,7 @@ pipeline {
    stage('Push Image') {
       steps{
         script {
-          docker.withRegistry( '', registryCredential ) {
+          docker.withRegistry( url: "http://harbor.smartdev.vn/", registryCredential ) {
             dockerImage.push()
           }
         }
