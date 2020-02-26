@@ -24,12 +24,10 @@ pipeline {
     stage ('Docker Build') {
       steps {
        script {
-          withDockerServer([uri: "tcp://<my-docker-socket>"]) {
           withDockerRegistry([credentialsId: 'registryCredential', url: "https://harbor.smartdev.vn/"]) {
             // we give the image the same version as the .war package
             def image = docker.build("registry:${BUILD_NUMBER}")
             image.push()
-        }
       }
     }
   }
