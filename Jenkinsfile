@@ -22,7 +22,7 @@ pipeline {
       }
     }
     
-    stage ('Docker Push Image') {
+  /*  stage ('Docker Push Image') {
       steps {
     // Build and push image with Jenkins' docker-plugin
         script {
@@ -31,8 +31,8 @@ pipeline {
       }
     }
   }
-}
-/*    stage('Push Image') {
+}*/
+   stage('Push Image') {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
@@ -40,7 +40,7 @@ pipeline {
           }
         }
       }
-    } */
+    } 
     stage('Remove Unused docker image && run kubectl') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
