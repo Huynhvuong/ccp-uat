@@ -22,11 +22,11 @@ pipeline {
       }
     }
     
-    stage ('Docker Build') {
+    stage ('Docker Push Image') {
       steps {
     // Build and push image with Jenkins' docker-plugin
         script {
-          withDockerRegistry([credentialsId: 'registryCredential', url: "http://harbor.smartdev.vn/"]) {
+          docker.withRegistry([credentialsId: 'registryCredential', url: "http://harbor.smartdev.vn/"]) {
             dockerImage.push()
       }
     }
