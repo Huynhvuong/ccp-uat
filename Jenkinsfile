@@ -29,7 +29,7 @@ pipeline {
     }
     stage('Remove Unused docker image && run kubectl') {
       steps{
-        sh "docker rmi $registry:$BUILD_NUMBER"
+        //sh "docker rmi $registry:$BUILD_NUMBER"
         sh "/home/vuong/Documents/kubernetes-course-master/jenkins/kubectl.sh" 
       }
     }
