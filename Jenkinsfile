@@ -23,7 +23,7 @@ pipeline {
     }
     stage('Push Image') {
       steps{
-        sh " docker login -u admin -p Harbor12345 https://harbor.smartdev.vn"
+       // sh " docker login -u admin -p Harbor12345 https://harbor.smartdev.vn"
         sh " docker image push $registry:latest"
       }
     }
