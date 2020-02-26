@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Cloning Git') {
       steps {
-        git 'https://github.com/Huynhvuong/my-node.git'
+        git 'https://github.com/Huynhvuong/ccp-uat.git'
       }
     }
     stage('Building image') {
