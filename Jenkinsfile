@@ -22,7 +22,7 @@ pipeline {
     stage ('Docker Build') {
       steps {
        script {
-         def image = docker.build("${env.registry}:${env.tag_beta}")
+         def image = docker.build("${env.registry}:${env.tag_beta}", "-e NPM_TOKEN=${env.NPM_TOKEN}")
             image.push()
       }
       }
