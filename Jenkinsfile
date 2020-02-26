@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "library"
+    registry = "harbor.smartdev.vn/library/ccp-uat"
     registryCredential = 'harbor'
     dockerImage = ''
   }
@@ -13,7 +13,7 @@ pipeline {
       steps {
         git 'https://github.com/Huynhvuong/ccp-uat.git'
       }
-    }
+    }  
     stage('Building image') {
       steps{
         script {
@@ -21,7 +21,18 @@ pipeline {
         }
       }
     }
-    stage('Push Image') {
+    
+    stage ('Docker Build') {
+      steps {
+    // Build and push image with Jenkins' docker-plugin
+        script {
+          withDockerRegistry([credentialsId: 'registryCredential', url: "http://harbor.smartdev.vn/"]) {
+            dockerImage.push()
+      }
+    }
+  }
+}
+/*    stage('Push Image') {
       steps{
         script {
           docker.withRegistry( '', registryCredential ) {
@@ -29,7 +40,7 @@ pipeline {
           }
         }
       }
-    }
+    } */
     stage('Remove Unused docker image && run kubectl') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
