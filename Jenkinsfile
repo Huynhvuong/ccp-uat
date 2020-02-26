@@ -4,6 +4,9 @@ pipeline {
     registryCredential = 'harbor'
     dockerImage = ''
   }
+  parameters {
+    string(name: 'rancher', defaultValue: '10.10.1.82', description: 'Rancher Server')
+  }
   agent any
   triggers {
          pollSCM('* * * * *')
@@ -31,6 +34,7 @@ pipeline {
       steps{
         sh "docker rmi $registry:latest"
         sh "/home/vuong/Documents/kubernetes-course-master/jenkins/kubectl.sh" 
+        sh "ssh -i /home/vuong/.ssh/id_rsa -v -o StrictHostKeyChecking=no root@${params.rancher} 'kubectl create -f /home/smartdev/tst/vuong.yml'"
       }
     }
   }
