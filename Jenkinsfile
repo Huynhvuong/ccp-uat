@@ -14,33 +14,35 @@ pipeline {
         git 'https://github.com/Huynhvuong/ccp-uat.git'
       }
     }  
-    stage('Building image') {
+   /* stage('Building image') {
       steps{
         script {
           dockerImage = docker.build registry + ":$BUILD_NUMBER"
         }
       }
-    }
-    
-  /*  stage ('Docker Push Image') {
+    }*/
+    stage ('Docker Build') {
       steps {
-    // Build and push image with Jenkins' docker-plugin
-        script {
-          docker.withRegistry([credentialsId: 'registryCredential', url: "http://harbor.smartdev.vn/"]) {
-            dockerImage.push()
+       script {
+          withDockerServer([uri: "tcp://<my-docker-socket>"]) {
+          withDockerRegistry([credentialsId: 'registryCredential', url: "https://harbor.smartdev.vn/"]) {
+            // we give the image the same version as the .war package
+            def image = docker.build("registry:${BUILD_NUMBER}")
+            image.push()
+        }
       }
     }
   }
-}*/
-   stage('Push Image') {
+}
+ /*  stage('Push Image') {
       steps{
         script {
-          docker.withRegistry( 'url: "http://harbor.smartdev.vn/"', registryCredential ) {
+          docker.withRegistry( '', registryCredential ) {
             dockerImage.push()
           }
         }
       }
-    } 
+    } */
     stage('Remove Unused docker image && run kubectl') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
