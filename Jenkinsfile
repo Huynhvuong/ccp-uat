@@ -1,10 +1,16 @@
 pipeline {
   environment {
-    registry = "harbor.smartdev.vn/library/ccp-uat"
-    registryCredential = 'harbor'
-    dockerImage = ''
+    registry = 'library/ccp-uat'
+    tag_beta = "${currentBuild.displayName}-${env.BRANCH_NAME}"
   }
   agent any
+  {
+    docker {
+      image ''
+      registryUrl 'https://harbor.smartdev.vn'
+      registryCredentialsId 'harbor'
+    }
+  }
   triggers {
          pollSCM('* * * * *')
   }
@@ -14,33 +20,14 @@ pipeline {
         git 'https://github.com/Huynhvuong/ccp-uat.git'
       }
     }  
-   /* stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
-      }
-    }*/
     stage ('Docker Build') {
       steps {
        script {
-          withDockerRegistry([credentialsId: 'registryCredential', url: "https://harbor.smartdev.vn/"]) {
-            // we give the image the same version as the .war package
-            def image = docker.build("registry:${BUILD_NUMBER}")
+         def image = docker.build("${env.registry}:${env.tag_beta}")
             image.push()
       }
-    }
-  }
-}
- /*  stage('Push Image') {
-      steps{
-        script {
-          docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-          }
-        }
       }
-    } */
+    }
     stage('Remove Unused docker image && run kubectl') {
       steps{
         sh "docker rmi $registry:$BUILD_NUMBER"
