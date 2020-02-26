@@ -29,7 +29,7 @@ pipeline {
     }
     stage('Remove Unused docker image && run kubectl') {
       steps{
-        sh "docker rmi $registry:$l"
+        sh "docker rmi $registry:$latest"
         sh "/home/vuong/Documents/kubernetes-course-master/jenkins/kubectl.sh" 
       }
     }
