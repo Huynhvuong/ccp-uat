@@ -3,8 +3,7 @@ pipeline {
     registry = 'library/ccp-uat'
     tag_beta = "${currentBuild.displayName}-${env.BRANCH_NAME}"
   }
-  agent any
-  {
+  agent {
     docker {
       image ''
       registryUrl 'https://harbor.smartdev.vn'
